@@ -11,6 +11,7 @@ const parentFolderPath = dirname(currentFilePath);
 
 const authorsJSONPath = join(parentFolderPath, "data.json");
 
+// post
 userRouter.post("/", (req, res) => {
   console.log("REQUEST BODY: ", req.body);
   const newAuthor = { ...req.body, createdAt: new Date(), id: uniqid() };
@@ -25,6 +26,7 @@ userRouter.post("/", (req, res) => {
   res.status(201).send({ id: newAuthor.id });
 });
 
+// GET
 userRouter.get("/", (req, res) => {
   const fileContent = fs.readFileSync(authorsJSONPath);
   console.log("FILE CONTENT: ", JSON.parse(fileContent));
@@ -32,6 +34,8 @@ userRouter.get("/", (req, res) => {
   const authorsArray = JSON.parse(fileContent);
   res.send(authorsArray);
 });
+
+// GET by ID
 userRouter.get("/:authorId", (req, res) => {
   console.log("ID: ", req.params.authorId);
 
