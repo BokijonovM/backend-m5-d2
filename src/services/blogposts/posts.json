@@ -1,0 +1,16 @@
+[
+  {
+    "title": "covid-19",
+    "category": "news",
+    "cover": "https://ui-avatars.com/api/?name=covid-19+news",
+    "author": {
+      "firstName": "Joe",
+      "lastName": "Chao",
+      "avatar": "https://ui-avatars.com/api/?name=Joe+Chao"
+    },
+    "readTime": { "value": "2", "unit": "minut" },
+    "content": "HTML",
+    "createdAt": "2022-01-26T16:05:12.616Z",
+    "_id": "rkowrgu8kyvqnsbt"
+  }
+]
