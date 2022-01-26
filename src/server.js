@@ -1,6 +1,6 @@
 import express from "express";
 import listEndpoints from "express-list-endpoints";
-import userRouter from "./data/index.js";
+import userRouter from "./services/data/index.js";
 
 const server = express();
 

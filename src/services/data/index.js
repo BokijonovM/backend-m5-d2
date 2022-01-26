@@ -14,10 +14,10 @@ const __dirname = dirname(__filename);
 
 const authorsFilePath = path.join(__dirname, "data.json");
 
-const router = express.Router();
+const userRouter = express.Router();
 
 // get all authors
-router.get("/", async (req, res, next) => {
+userRouter.get("/", async (req, res, next) => {
   try {
     const fileAsBuffer = fs.readFileSync(authorsFilePath);
     const fileAsString = fileAsBuffer.toString();
@@ -29,7 +29,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // create  author
-router.post("/", async (req, res, next) => {
+userRouter.post("/", async (req, res, next) => {
   try {
     const { name, surname, email, dateOfBirth } = req.body;
 
@@ -61,7 +61,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // get single authors
-router.get("/:id", async (req, res, next) => {
+userRouter.get("/:id", async (req, res, next) => {
   try {
     const fileAsBuffer = fs.readFileSync(authorsFilePath);
 
@@ -82,7 +82,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // delete  author
-router.delete("/:id", async (req, res, next) => {
+userRouter.delete("/:id", async (req, res, next) => {
   try {
     const fileAsBuffer = fs.readFileSync(authorsFilePath);
 
@@ -107,7 +107,7 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 //  update author
-router.put("/:id", async (req, res, next) => {
+userRouter.put("/:id", async (req, res, next) => {
   try {
     const fileAsBuffer = fs.readFileSync(authorsFilePath);
 
@@ -139,4 +139,4 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-export default router;
+export default userRouter;
