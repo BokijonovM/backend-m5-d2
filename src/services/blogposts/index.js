@@ -60,4 +60,22 @@ postsRouter.post("/", newPostValidation, (req, res, next) => {
   }
 });
 
+postsRouter.get("/:postId", (req, res, next) => {
+  try {
+    const fileAsJSONArray = getPosts();
+    const singlePost = fileAsJSONArray.find(
+      singlePost => singlePost._id === req.params.postId
+    );
+    if (!singlePost) {
+      res
+        .status(404)
+        .send({ message: `Post with ${req.params.postId} is not found!` });
+    }
+    res.send(singlePost);
+    res.send(fileArray);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
+});
+
 export default postsRouter;

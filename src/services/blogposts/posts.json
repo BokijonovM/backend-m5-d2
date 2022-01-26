@@ -1,16 +1,1 @@
-[
-  {
-    "title": "covid-19",
-    "category": "news",
-    "cover": "https://ui-avatars.com/api/?name=covid-19+news",
-    "author": {
-      "firstName": "Joe",
-      "lastName": "Chao",
-      "avatar": "https://ui-avatars.com/api/?name=Joe+Chao"
-    },
-    "readTime": { "value": "2", "unit": "minut" },
-    "content": "HTML",
-    "createdAt": "2022-01-26T16:05:12.616Z",
-    "_id": "rkowrgu8kyvqnsbt"
-  }
-]
+[{"title":"covid-19","category":"news","cover":"https://ui-avatars.com/api/?name=covid-19+news","author":{"firstName":"Joe","lastName":"Chao","avatar":"https://ui-avatars.com/api/?name=Joe+Chao"},"readTime":{"value":"2","unit":"minut"},"content":"HTML","createdAt":"2022-01-26T16:05:12.616Z","_id":"rkowrgu8kyvqnsbt"},{"title":"covid-29","category":"news","cover":"https://ui-avatars.com/api/?name=covid-29+news","author":{"firstName":"Son","lastName":"Min","avatar":"https://ui-avatars.com/api/?name=Son+Min"},"readTime":{"value":"4","unit":"minut"},"content":"HTML","createdAt":"2022-01-26T16:07:38.883Z","_id":"rkowrgu8kyvqqx6r"}]
