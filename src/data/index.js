@@ -1,53 +1,142 @@
 import express from "express";
+
 import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+
 import uniqid from "uniqid";
 
-const userRouter = express.Router();
-const currentFilePath = fileURLToPath(import.meta.url);
+import path, { dirname } from "path";
 
-const parentFolderPath = dirname(currentFilePath);
+import { fileURLToPath } from "url";
 
-const authorsJSONPath = join(parentFolderPath, "data.json");
+const __filename = fileURLToPath(import.meta.url);
 
-// post
-userRouter.post("/", (req, res) => {
-  console.log("REQUEST BODY: ", req.body);
-  const newAuthor = { ...req.body, createdAt: new Date(), id: uniqid() };
-  console.log(newAuthor);
+const __dirname = dirname(__filename);
 
-  const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath));
+const authorsFilePath = path.join(__dirname, "data.json");
 
-  authorsArray.push(newAuthor);
+const router = express.Router();
 
-  fs.writeFileSync(authorsJSONPath, JSON.stringify(authorsArray));
-
-  res.status(201).send({ id: newAuthor.id });
+// get all authors
+router.get("/", async (req, res, next) => {
+  try {
+    const fileAsBuffer = fs.readFileSync(authorsFilePath);
+    const fileAsString = fileAsBuffer.toString();
+    const fileAsJSON = JSON.parse(fileAsString);
+    res.send(fileAsJSON);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
 });
 
-// GET
-userRouter.get("/", (req, res) => {
-  const fileContent = fs.readFileSync(authorsJSONPath);
-  console.log("FILE CONTENT: ", JSON.parse(fileContent));
+// create  author
+router.post("/", async (req, res, next) => {
+  try {
+    const { name, surname, email, dateOfBirth } = req.body;
 
-  const authorsArray = JSON.parse(fileContent);
-  res.send(authorsArray);
+    const author = {
+      id: uniqid(),
+      name,
+      surname,
+      email,
+      dateOfBirth,
+      avatar: `https://ui-avatars.com/api/?name=${name}+${surname}`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const fileAsBuffer = fs.readFileSync(authorsFilePath);
+
+    const fileAsString = fileAsBuffer.toString();
+
+    const fileAsJSONArray = JSON.parse(fileAsString);
+
+    fileAsJSONArray.push(author);
+
+    fs.writeFileSync(authorsFilePath, JSON.stringify(fileAsJSONArray));
+
+    res.send(author);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
 });
 
-// GET by ID
-userRouter.get("/:authorId", (req, res) => {
-  console.log("ID: ", req.params.authorId);
+// get single authors
+router.get("/:id", async (req, res, next) => {
+  try {
+    const fileAsBuffer = fs.readFileSync(authorsFilePath);
 
-  const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath));
+    const fileAsString = fileAsBuffer.toString();
 
-  const foundAuthor = authorsArray.find(
-    user => user.id === req.params.authorId
-  );
+    const fileAsJSONArray = JSON.parse(fileAsString);
 
-  res.send(foundAuthor);
+    const author = fileAsJSONArray.find(author => author.id === req.params.id);
+    if (!author) {
+      res
+        .status(404)
+        .send({ message: `Author with ${req.params.id} is not found!` });
+    }
+    res.send(author);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
 });
-userRouter.put("/:authorId", (req, res) => {});
-userRouter.delete("/:authorId", (req, res) => {});
 
-export default userRouter;
+// delete  author
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const fileAsBuffer = fs.readFileSync(authorsFilePath);
+
+    const fileAsString = fileAsBuffer.toString();
+
+    let fileAsJSONArray = JSON.parse(fileAsString);
+
+    const author = fileAsJSONArray.find(author => author.id === req.params.id);
+    if (!author) {
+      res
+        .status(404)
+        .send({ message: `Author with ${req.params.id} is not found!` });
+    }
+    fileAsJSONArray = fileAsJSONArray.filter(
+      author => author.id !== req.params.id
+    );
+    fs.writeFileSync(authorsFilePath, JSON.stringify(fileAsJSONArray));
+    res.status(204).send();
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
+});
+
+//  update author
+router.put("/:id", async (req, res, next) => {
+  try {
+    const fileAsBuffer = fs.readFileSync(authorsFilePath);
+
+    const fileAsString = fileAsBuffer.toString();
+
+    let fileAsJSONArray = JSON.parse(fileAsString);
+
+    const authorIndex = fileAsJSONArray.findIndex(
+      author => author.id === req.params.id
+    );
+    if (!authorIndex == -1) {
+      res
+        .status(404)
+        .send({ message: `Author with ${req.params.id} is not found!` });
+    }
+    const previousAuthorData = fileAsJSONArray[authorIndex];
+    const changedAuthor = {
+      ...previousAuthorData,
+      ...req.body,
+      updatedAt: new Date(),
+      id: req.params.id,
+    };
+    fileAsJSONArray[authorIndex] = changedAuthor;
+
+    fs.writeFileSync(authorsFilePath, JSON.stringify(fileAsJSONArray));
+    res.send(changedAuthor);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
+});
+
+export default router;
