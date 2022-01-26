@@ -17,6 +17,8 @@ const postsJSONPath = join(
 const getPosts = () => JSON.parse(fs.readFileSync(postsJSONPath));
 const writePosts = content =>
   fs.writeFileSync(postsJSONPath, JSON.stringify(content));
+
+// ************************ GET ************************
 postsRouter.get("/", (req, res, next) => {
   try {
     const fileArray = getPosts();
@@ -25,6 +27,8 @@ postsRouter.get("/", (req, res, next) => {
     res.send(500).send({ message: error.message });
   }
 });
+
+// ************************ POST ************************
 postsRouter.post("/", newPostValidation, (req, res, next) => {
   try {
     const { title, category, firstName, lastName, value, unit, content } =
@@ -60,6 +64,7 @@ postsRouter.post("/", newPostValidation, (req, res, next) => {
   }
 });
 
+// ************************ POST by ID ************************
 postsRouter.get("/:postId", (req, res, next) => {
   try {
     const fileAsJSONArray = getPosts();
@@ -73,6 +78,34 @@ postsRouter.get("/:postId", (req, res, next) => {
     }
     res.send(singlePost);
     res.send(fileArray);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
+});
+
+// ************************ EDIT by ID ************************
+postsRouter.put("/:postId", (req, res, next) => {
+  try {
+    const arrayOfPosts = getPosts();
+    const authorIndex = arrayOfPosts.findIndex(
+      author => author._id === req.params.postId
+    );
+    if (!authorIndex == -1) {
+      res
+        .status(404)
+        .send({ message: `Author with ${req.params.postId} is not found!` });
+    }
+    const previousAuthorData = arrayOfPosts[authorIndex];
+    const changedAuthor = {
+      ...previousAuthorData,
+      ...req.body,
+      updatedAt: new Date(),
+      _id: req.params.postId,
+    };
+    arrayOfPosts[authorIndex] = changedAuthor;
+
+    writePosts(arrayOfPosts);
+    res.send(changedAuthor);
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
