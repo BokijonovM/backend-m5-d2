@@ -58,7 +58,7 @@ postsRouter.post("/", newPostValidation, (req, res, next) => {
 
     writePosts(postsArray);
 
-    res.send(201).send({ _id: newPost._id });
+    res.send(newPost);
   } catch (error) {
     next(createHttpError(400, "Some errors occured in request body!"));
   }
