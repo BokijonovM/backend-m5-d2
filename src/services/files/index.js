@@ -12,7 +12,7 @@ filesRouter.post(
     try {
       console.log("FILE: ", req.file);
       await saveUsersAvatars(req.file.originalname, req.file.buffer);
-      res.send("Ok");
+      res.send("Single file uploaded");
     } catch (error) {
       next(error);
     }
@@ -30,7 +30,7 @@ filesRouter.post(
         saveUsersAvatars(file.originalname, file.buffer)
       );
       await Promise.all(arrayOfPromises);
-      res.send("Ok");
+      res.send("Files uploaded");
     } catch (error) {
       next(error);
     }
