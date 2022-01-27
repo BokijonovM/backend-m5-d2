@@ -2,7 +2,7 @@ import express from "express";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import uniqid from "uniqid";
-import fs from "fs";
+import fs, { write } from "fs";
 import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import { newPostValidation } from "./validation.js";
@@ -60,7 +60,7 @@ postsRouter.post("/", newPostValidation, (req, res, next) => {
 
     res.send(newPost);
   } catch (error) {
-    next(createHttpError(400, "Some errors occured in request body!"));
+    next(createHttpError(400, "Some errors occurred in request body!"));
   }
 });
 
@@ -106,6 +106,27 @@ postsRouter.put("/:postId", (req, res, next) => {
 
     writePosts(arrayOfPosts);
     res.send(changedAuthor);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
+});
+
+postsRouter.delete("/:postId", (req, res, next) => {
+  try {
+    const fileAsJSONArray = getPosts();
+    const author = fileAsJSONArray.find(
+      author => author._id === req.params.postId
+    );
+    if (!author) {
+      res
+        .status(404)
+        .send({ message: `Author with ${req.params.postId} is not found!` });
+    }
+    fileAsJSONArray = fileAsJSONArray.filter(
+      author => author._id !== req.params.postId
+    );
+    writePosts(fileAsJSONArray);
+    res.send("Deleted");
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
