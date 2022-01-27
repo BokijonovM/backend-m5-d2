@@ -113,20 +113,15 @@ postsRouter.put("/:postId", (req, res, next) => {
 
 postsRouter.delete("/:postId", (req, res, next) => {
   try {
-    const fileAsJSONArray = getPosts();
-    const author = fileAsJSONArray.find(
-      author => author._id === req.params.postId
-    );
-    if (!author) {
-      res
-        .status(404)
-        .send({ message: `Author with ${req.params.postId} is not found!` });
-    }
-    fileAsJSONArray = fileAsJSONArray.filter(
-      author => author._id !== req.params.postId
-    );
-    writePosts(fileAsJSONArray);
-    res.send("Deleted");
+    const postId = req.params.postId;
+
+    const postsArray = getPosts();
+
+    const remainingPosts = postsArray.filter(post => post._id !== postId);
+
+    writePosts(remainingPosts);
+
+    res.send({ message: `Post with ${postId} is successfully deleted` });
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
