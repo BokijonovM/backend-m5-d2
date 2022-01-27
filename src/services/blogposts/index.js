@@ -31,34 +31,16 @@ postsRouter.get("/", (req, res, next) => {
 // ************************ POST ************************
 postsRouter.post("/", newPostValidation, (req, res, next) => {
   try {
-    const { title, category, firstName, lastName, value, unit, content } =
-      req.body;
-    const newPost = {
-      //   ...req.body,
-      title,
-      category,
-      cover: `https://ui-avatars.com/api/?name=${title}+${category}`,
-      author: {
-        firstName,
-        lastName,
-        avatar: `https://ui-avatars.com/api/?name=${firstName}+${lastName}`,
-      },
-      readTime: {
-        value,
-        unit,
-      },
-      content,
-      createdAt: new Date(),
+    const blog = {
       _id: uniqid(),
+      ...req.body,
+      createdAt: new Date(),
     };
-
     const postsArray = getPosts();
 
-    postsArray.push(newPost);
-
+    postsArray.push(blog);
     writePosts(postsArray);
-
-    res.send(newPost);
+    res.send(blog);
   } catch (error) {
     next(createHttpError(400, "Some errors occurred in request body!"));
   }
