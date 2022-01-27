@@ -84,28 +84,50 @@ postsRouter.get("/:postId", (req, res, next) => {
 });
 
 // ************************ EDIT by ID ************************
+// postsRouter.put("/:postId", (req, res, next) => {
+//   try {
+//     const postId = req.params.postId;
+
+//     const postArray = getPosts();
+
+//     const index = postArray.findIndex(post => post._id === postId);
+
+//     const oldPost = postArray[index];
+
+//     const updatedPost = { ...oldPost, ...req.body, updatedAt: new Date() };
+
+//     postArray[index] = updatedPost;
+
+//     writePosts(postArray);
+
+//     res.send(updatedPost);
+//   } catch (error) {
+//     res.send(500).send({ message: error.message });
+//   }
+// });
 postsRouter.put("/:postId", (req, res, next) => {
   try {
-    const arrayOfPosts = getPosts();
-    const authorIndex = arrayOfPosts.findIndex(
-      author => author._id === req.params.postId
-    );
-    if (!authorIndex == -1) {
-      res
-        .status(404)
-        .send({ message: `Author with ${req.params.postId} is not found!` });
+    const postId = req.params.postId;
+
+    const postArray = getPosts();
+
+    const blogIndex = postArray.findIndex(post => post._id === postId);
+
+    if (!blogIndex == -1) {
+      res.status(404).send({ message: `Blog post ${postId}  is not found!` });
     }
-    const previousAuthorData = arrayOfPosts[authorIndex];
-    const changedAuthor = {
-      ...previousAuthorData,
+
+    const previousPost = postArray[blogIndex];
+    const changedPost = {
+      ...previousPost,
       ...req.body,
       updatedAt: new Date(),
-      _id: req.params.postId,
+      _id: postId,
     };
-    arrayOfPosts[authorIndex] = changedAuthor;
+    postArray[blogIndex] = changedPost;
+    writePosts(postArray);
 
-    writePosts(arrayOfPosts);
-    res.send(changedAuthor);
+    res.send(changedPost);
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
