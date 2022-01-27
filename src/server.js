@@ -10,6 +10,7 @@ import {
   genericErrorHandler,
 } from "./errorHandlers.js";
 import cors from "cors";
+import filesRouter from "./services/files/index.js";
 
 const server = express();
 
@@ -36,6 +37,7 @@ server.use(express.json());
 
 server.use("/authors", userRouter);
 server.use("/posts", loggerMiddleware, postsRouter);
+server.use("/files", filesRouter);
 
 server.use(badRequestHandler);
 server.use(unauthorizedHandler);

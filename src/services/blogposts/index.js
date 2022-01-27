@@ -6,6 +6,7 @@ import fs, { write } from "fs";
 import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import { newPostValidation } from "./validation.js";
+import { getPosts, getAuthors, writePosts } from "../../lib/fs-tools.js";
 
 const postsRouter = express.Router();
 
@@ -14,32 +15,40 @@ const postsJSONPath = join(
   "../jsonData/posts.json"
 );
 
-const getPosts = () => JSON.parse(fs.readFileSync(postsJSONPath));
-const writePosts = content =>
-  fs.writeFileSync(postsJSONPath, JSON.stringify(content));
+// const getPosts = () => JSON.parse(fs.readFileSync(postsJSONPath));
+// const writePosts = content =>
+//   fs.writeFileSync(postsJSONPath, JSON.stringify(content));
 
 // ************************ GET ************************
-postsRouter.get("/", (req, res, next) => {
+postsRouter.get("/", async (req, res, next) => {
   try {
-    const fileArray = getPosts();
-    res.send(fileArray);
+    const fileArray = await getPosts();
+    const authorArray = await getAuthors();
+    if (req.query && req.query.category) {
+      const filteredPosts = fileArray.filter(
+        post => post.category === req.query.category
+      );
+      res.send(filteredPosts);
+    } else {
+      res.send({ authorArray, fileArray });
+    }
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
 });
 
 // ************************ POST ************************
-postsRouter.post("/", newPostValidation, (req, res, next) => {
+postsRouter.post("/", newPostValidation, async (req, res, next) => {
   try {
     const blog = {
       _id: uniqid(),
       ...req.body,
       createdAt: new Date(),
     };
-    const postsArray = getPosts();
+    const postsArray = await getPosts();
 
     postsArray.push(blog);
-    writePosts(postsArray);
+    await writePosts(postsArray);
     res.send(blog);
   } catch (error) {
     next(createHttpError(400, "Some errors occurred in request body!"));
@@ -47,9 +56,9 @@ postsRouter.post("/", newPostValidation, (req, res, next) => {
 });
 
 // ************************ POST by ID ************************
-postsRouter.get("/:postId", (req, res, next) => {
+postsRouter.get("/:postId", async (req, res, next) => {
   try {
-    const fileAsJSONArray = getPosts();
+    const fileAsJSONArray = await getPosts();
     const singlePost = fileAsJSONArray.find(
       singlePost => singlePost._id === req.params.postId
     );
@@ -87,11 +96,11 @@ postsRouter.get("/:postId", (req, res, next) => {
 //     res.send(500).send({ message: error.message });
 //   }
 // });
-postsRouter.put("/:postId", (req, res, next) => {
+postsRouter.put("/:postId", async (req, res, next) => {
   try {
     const postId = req.params.postId;
 
-    const postArray = getPosts();
+    const postArray = await getPosts();
 
     const blogIndex = postArray.findIndex(post => post._id === postId);
 
@@ -107,7 +116,7 @@ postsRouter.put("/:postId", (req, res, next) => {
       _id: postId,
     };
     postArray[blogIndex] = changedPost;
-    writePosts(postArray);
+    await writePosts(postArray);
 
     res.send(changedPost);
   } catch (error) {
@@ -115,15 +124,15 @@ postsRouter.put("/:postId", (req, res, next) => {
   }
 });
 
-postsRouter.delete("/:postId", (req, res, next) => {
+postsRouter.delete("/:postId", async (req, res, next) => {
   try {
     const postId = req.params.postId;
 
-    const postsArray = getPosts();
+    const postsArray = await getPosts();
 
     const remainingPosts = postsArray.filter(post => post._id !== postId);
 
-    writePosts(remainingPosts);
+    await writePosts(remainingPosts);
 
     res.send({ message: `Post with ${postId} is successfully deleted` });
   } catch (error) {
