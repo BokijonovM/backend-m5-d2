@@ -11,7 +11,7 @@ const postsRouter = express.Router();
 
 const postsJSONPath = join(
   dirname(fileURLToPath(import.meta.url)),
-  "posts.json"
+  "../jsonData/posts.json"
 );
 
 const getPosts = () => JSON.parse(fs.readFileSync(postsJSONPath));

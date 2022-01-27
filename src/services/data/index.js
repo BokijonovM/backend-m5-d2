@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = dirname(__filename);
 
-const authorsFilePath = path.join(__dirname, "data.json");
+const authorsFilePath = path.join(__dirname, "../jsonData/data.json");
 
 const userRouter = express.Router();
 
