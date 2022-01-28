@@ -126,8 +126,8 @@ userRouter.put("/:id", async (req, res, next) => {
 });
 
 userRouter.put(
-  "/:id/cover",
-  parseFile.single("cover"),
+  "/:id/avatar",
+  parseFile.single("avatar"),
   uploadFile,
   async (req, res, next) => {
     try {
