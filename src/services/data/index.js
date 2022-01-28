@@ -14,14 +14,16 @@ const __dirname = dirname(__filename);
 
 const authorsFilePath = path.join(__dirname, "../jsonData/data.json");
 
+import { parseFile, uploadFile } from "../files/index.js";
+
+import { getPosts, getAuthors, writeAuthors } from "../../lib/fs-tools.js";
+
 const userRouter = express.Router();
 
 // get all authors
 userRouter.get("/", async (req, res, next) => {
   try {
-    const fileAsBuffer = fs.readFileSync(authorsFilePath);
-    const fileAsString = fileAsBuffer.toString();
-    const fileAsJSON = JSON.parse(fileAsString);
+    const fileAsJSON = await getAuthors();
     res.send(fileAsJSON);
   } catch (error) {
     res.send(500).send({ message: error.message });
@@ -44,11 +46,7 @@ userRouter.post("/", async (req, res, next) => {
       updatedAt: new Date(),
     };
 
-    const fileAsBuffer = fs.readFileSync(authorsFilePath);
-
-    const fileAsString = fileAsBuffer.toString();
-
-    const fileAsJSONArray = JSON.parse(fileAsString);
+    const fileAsJSONArray = await getAuthors();
 
     fileAsJSONArray.push(author);
 
@@ -63,11 +61,7 @@ userRouter.post("/", async (req, res, next) => {
 // get single authors
 userRouter.get("/:id", async (req, res, next) => {
   try {
-    const fileAsBuffer = fs.readFileSync(authorsFilePath);
-
-    const fileAsString = fileAsBuffer.toString();
-
-    const fileAsJSONArray = JSON.parse(fileAsString);
+    const fileAsJSONArray = await getAuthors();
 
     const author = fileAsJSONArray.find(author => author.id === req.params.id);
     if (!author) {
@@ -84,11 +78,7 @@ userRouter.get("/:id", async (req, res, next) => {
 // delete  author
 userRouter.delete("/:id", async (req, res, next) => {
   try {
-    const fileAsBuffer = fs.readFileSync(authorsFilePath);
-
-    const fileAsString = fileAsBuffer.toString();
-
-    let fileAsJSONArray = JSON.parse(fileAsString);
+    let fileAsJSONArray = await getAuthors();
 
     const author = fileAsJSONArray.find(author => author.id === req.params.id);
     if (!author) {
@@ -99,7 +89,7 @@ userRouter.delete("/:id", async (req, res, next) => {
     fileAsJSONArray = fileAsJSONArray.filter(
       author => author.id !== req.params.id
     );
-    fs.writeFileSync(authorsFilePath, JSON.stringify(fileAsJSONArray));
+    await writeAuthors(fileAsJSONArray);
     res.status(204).send();
   } catch (error) {
     res.send(500).send({ message: error.message });
@@ -109,11 +99,7 @@ userRouter.delete("/:id", async (req, res, next) => {
 //  update author
 userRouter.put("/:id", async (req, res, next) => {
   try {
-    const fileAsBuffer = fs.readFileSync(authorsFilePath);
-
-    const fileAsString = fileAsBuffer.toString();
-
-    let fileAsJSONArray = JSON.parse(fileAsString);
+    let fileAsJSONArray = await getAuthors();
 
     const authorIndex = fileAsJSONArray.findIndex(
       author => author.id === req.params.id
@@ -132,11 +118,44 @@ userRouter.put("/:id", async (req, res, next) => {
     };
     fileAsJSONArray[authorIndex] = changedAuthor;
 
-    fs.writeFileSync(authorsFilePath, JSON.stringify(fileAsJSONArray));
+    await writeAuthors(fileAsJSONArray);
     res.send(changedAuthor);
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
 });
+
+userRouter.put(
+  "/:id/avatar",
+  parseFile.single("avatar"),
+  uploadFile,
+  async (req, res, next) => {
+    try {
+      const fileAsJSONArray = await getAuthors();
+
+      const blogIndex = fileAsJSONArray.findIndex(
+        blog => blog._id === req.params.id
+      );
+      if (!blogIndex == -1) {
+        res
+          .status(404)
+          .send({ message: `blog with ${req.params.id} is not found!` });
+      }
+      const previousblogData = fileAsJSONArray[blogIndex];
+      const changedblog = {
+        ...previousblogData,
+        cover: req.file,
+        updatedAt: new Date(),
+        _id: req.params.id,
+      };
+      fileAsJSONArray[blogIndex] = changedblog;
+
+      await writeAuthors(fileAsJSONArray);
+      res.send(changedblog);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default userRouter;
