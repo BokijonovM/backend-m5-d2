@@ -21,7 +21,7 @@ export const uploadFile = (req, res, next) => {
     const fileName = `${req.params.postId}${extension}`;
     const pathToFile = path.join(publicDirectory, fileName);
     fs.writeFileSync(pathToFile, buffer);
-    const link = `http://localhost:3001/${fileName}`;
+    const link = `http://localhost:3001/public/img/posts/${fileName}`;
     req.file = link;
     next();
   } catch (error) {
