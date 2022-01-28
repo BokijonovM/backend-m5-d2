@@ -24,15 +24,16 @@ const postsJSONPath = join(
 postsRouter.get("/", async (req, res, next) => {
   try {
     const fileArray = await getPosts();
-    const authorArray = await getAuthors();
-    if (req.query && req.query.category) {
-      const filteredPosts = fileArray.filter(
-        post => post.category === req.query.category
-      );
-      res.send(filteredPosts);
-    } else {
-      res.send({ authorArray, fileArray });
-    }
+    // const authorArray = await getAuthors();
+    // if (req.query && req.query.category) {
+    //   const filteredPosts = fileArray.filter(
+    //     post => post.category === req.query.category
+    //   );
+    //   res.send(filteredPosts);
+    // } else {
+    //   res.send({ authorArray, fileArray });
+    // }
+    res.send(fileArray);
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
