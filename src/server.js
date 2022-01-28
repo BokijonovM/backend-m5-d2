@@ -11,6 +11,7 @@ import {
 } from "./errorHandlers.js";
 import cors from "cors";
 import filesRouter from "./services/files/index.js";
+import uploadPostsRouter from "./services/files/posts.js";
 
 const server = express();
 
@@ -20,14 +21,7 @@ const loggerMiddleware = (req, res, next) => {
   console.log(
     `Request method: ${req.method} --- URL ${req.url} --- ${new Date()}`
   );
-  req.name = "Diego";
   next();
-};
-
-const fakeAuthMiddleware = (req, res, next) => {
-  if (req.name !== "Diego")
-    next(createHttpError(401, "Non Diego users are not allowed!"));
-  else next();
 };
 
 server.use(loggerMiddleware);
@@ -36,8 +30,9 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/authors", userRouter);
-server.use("/posts", loggerMiddleware, postsRouter);
-server.use("/files", filesRouter);
+server.use("/posts", postsRouter);
+server.use("/uploadAvatar", filesRouter);
+server.use("/uploadCover", uploadPostsRouter);
 
 server.use(badRequestHandler);
 server.use(unauthorizedHandler);

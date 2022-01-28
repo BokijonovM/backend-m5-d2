@@ -1,10 +1,10 @@
 import express from "express";
 import multer from "multer";
-import { saveUsersAvatars } from "../../lib/fs-tools.js";
+import { saveUsersAvatars } from "../../lib/fs-toolsPost.js";
 
-const filesRouter = express.Router();
+const uploadPostsRouter = express.Router();
 
-filesRouter.post(
+uploadPostsRouter.post(
   "/uploadSingle",
   multer().single("avatar"),
   async (req, res, next) => {
@@ -19,4 +19,4 @@ filesRouter.post(
   }
 );
 
-export default filesRouter;
+export default uploadPostsRouter;
