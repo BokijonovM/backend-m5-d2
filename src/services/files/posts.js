@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = dirname(__filename);
 
-const publicDirectory = path.join(__dirname, "../../../public");
+const publicDirectory = path.join(__dirname, "../../../public/img/posts");
 
 export const parseFile = multer();
 

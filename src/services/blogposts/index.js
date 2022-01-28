@@ -6,7 +6,7 @@ import fs, { write } from "fs";
 import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import { newPostValidation } from "./validation.js";
-import { getPosts, getAuthors, writePosts } from "../../lib/fs-tools.js";
+import { getPosts, getAuthors, writePosts } from "../../lib/fs-toolsPost.js";
 import { parseFile, uploadFile } from "../files/posts.js";
 
 const postsRouter = express.Router();
