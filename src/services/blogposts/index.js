@@ -7,6 +7,7 @@ import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import { newPostValidation } from "./validation.js";
 import { getPosts, getAuthors, writePosts } from "../../lib/fs-tools.js";
+import { parseFile, uploadFile } from "../files/posts.js";
 
 const postsRouter = express.Router();
 
@@ -70,7 +71,7 @@ postsRouter.get("/:postId", async (req, res, next) => {
     res.send(singlePost);
     res.send(fileArray);
   } catch (error) {
-    res.send(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -140,4 +141,38 @@ postsRouter.delete("/:postId", async (req, res, next) => {
   }
 });
 
+// upload poster
+
+postsRouter.put(
+  "/:postId/cover",
+  parseFile.single("cover"),
+  uploadFile,
+  async (req, res, next) => {
+    try {
+      const fileAsJSONArray = await getPosts();
+
+      const blogIndex = fileAsJSONArray.findIndex(
+        blog => blog._id === req.params.postId
+      );
+      if (!blogIndex == -1) {
+        res
+          .status(404)
+          .send({ message: `blog with ${req.params.postId} is not found!` });
+      }
+      const previousblogData = fileAsJSONArray[blogIndex];
+      const changedblog = {
+        ...previousblogData,
+        cover: req.file,
+        updatedAt: new Date(),
+        _id: req.params.postId,
+      };
+      fileAsJSONArray[blogIndex] = changedblog;
+
+      await writePosts(fileAsJSONArray);
+      res.send(changedblog);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 export default postsRouter;

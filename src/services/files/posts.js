@@ -1,22 +1,30 @@
-import express from "express";
+import path, { dirname, extname } from "path";
+
+import { fileURLToPath } from "url";
+
+import fs from "fs";
+
 import multer from "multer";
-import { saveUsersAvatars } from "../../lib/fs-toolsPost.js";
 
-const uploadPostsRouter = express.Router();
+const __filename = fileURLToPath(import.meta.url);
 
-uploadPostsRouter.post(
-  "/uploadSingle",
-  multer().single("avatar"),
-  async (req, res, next) => {
-    // "avatar" does need to match exactly to the name used in FormData field in the frontend, otherwise Multer is not going to be able to find the file in the req.body
-    try {
-      console.log("FILE: ", req.file);
-      await saveUsersAvatars(req.file.originalname, req.file.buffer);
-      res.send("Single file uploaded");
-    } catch (error) {
-      next(error);
-    }
+const __dirname = dirname(__filename);
+
+const publicDirectory = path.join(__dirname, "../../../public");
+
+export const parseFile = multer();
+
+export const uploadFile = (req, res, next) => {
+  try {
+    const { originalname, buffer } = req.file;
+    const extension = extname(originalname);
+    const fileName = `${req.params.id}${extension}`;
+    const pathToFile = path.join(publicDirectory, fileName);
+    fs.writeFileSync(pathToFile, buffer);
+    const link = `http://localhost:3001/${fileName}`;
+    req.file = link;
+    next();
+  } catch (error) {
+    next(error);
   }
-);
-
-export default uploadPostsRouter;
+};

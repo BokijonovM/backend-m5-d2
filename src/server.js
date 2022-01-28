@@ -10,8 +10,8 @@ import {
   genericErrorHandler,
 } from "./errorHandlers.js";
 import cors from "cors";
-import filesRouter from "./services/files/index.js";
-import uploadPostsRouter from "./services/files/posts.js";
+// import filesRouter from "./services/files/index.js";
+// import uploadPostsRouter from "./services/files/posts.js";
 
 const server = express();
 
@@ -31,8 +31,8 @@ server.use(express.json());
 
 server.use("/authors", userRouter);
 server.use("/posts", postsRouter);
-server.use("/uploadAvatar", filesRouter);
-server.use("/uploadCover", uploadPostsRouter);
+// server.use("/uploadAvatar", filesRouter);
+// server.use("/uploadCover", uploadPostsRouter);
 
 server.use(badRequestHandler);
 server.use(unauthorizedHandler);
