@@ -1,49 +1,5 @@
 [
   {
-    "_id": "rkowrgl0kywiszd7",
-    "title": "ukraine and u",
-    "category": "news",
-    "cover": "https://images.unsplash.com/photo-1643295368014-a8868e9fb550?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
-    "author": {
-      "name": "misha",
-      "surname": "kunde",
-      "avatar": "https://ui-avatars.com/api/?name=misha+kunde"
-    },
-    "readTime": { "value": "4", "unit": "minutes" },
-    "content": "HTML",
-    "createdAt": "2022-01-27T05:13:04.267Z",
-    "updatedAt": "2022-01-28T04:28:31.544Z"
-  },
-  {
-    "_id": "rkowriackyxvsusx",
-    "title": "ukrain",
-    "category": "daily",
-    "cover": "https://images.unsplash.com/photo-1643295368014-a8868e9fb550?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
-    "author": {
-      "name": "sasha",
-      "surname": "kunde",
-      "avatar": "https://ui-avatars.com/api/?name=misha+kunde"
-    },
-    "readTime": { "value": "4", "unit": "minutes" },
-    "content": "HTML",
-    "createdAt": "2022-01-28T04:04:39.537Z",
-    "updatedAt": "2022-01-28T04:48:07.392Z"
-  },
-  {
-    "_id": "rkowrg44kyy0af2o",
-    "category": "Horror",
-    "title": "Day4",
-    "cover": "https://images.unsplash.com/photo-1643295368014-a8868e9fb550?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
-    "author": {
-      "name": "Mark",
-      "surname": "Zuck",
-      "avatar": "https://ui-avatars.com/api/?name=Mark+Zuck"
-    },
-    "readTime": { "value": "2", "unit": "minutes" },
-    "content": "Something",
-    "createdAt": "2022-01-28T06:10:17.424Z"
-  },
-  {
     "_id": "rkowrhz0kyy1thqp",
     "category": "Comedy",
     "title": "Ukrainian official tells CNN Biden's call with Ukrainian President 'did not go well' but White House disputes account",
