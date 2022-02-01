@@ -3,6 +3,7 @@ import listEndpoints from "express-list-endpoints";
 import userRouter from "./services/data/index.js";
 import postsRouter from "./services/blogposts/index.js";
 import createHttpError from "http-errors";
+import { join } from "path";
 import {
   badRequestHandler,
   unauthorizedHandler,
@@ -10,12 +11,14 @@ import {
   genericErrorHandler,
 } from "./errorHandlers.js";
 import cors from "cors";
-// import filesRouter from "./services/files/index.js";
+import postsRouterFile from "./services/files/posts.js";
 // import uploadPostsRouter from "./services/files/posts.js";
 
 const server = express();
 
-const port = 3001;
+const port = process.env.PORT || 3001;
+
+const publicFolderPath = join(process.cwd(), "./public");
 
 const loggerMiddleware = (req, res, next) => {
   console.log(
@@ -24,14 +27,21 @@ const loggerMiddleware = (req, res, next) => {
   next();
 };
 
-server.use(loggerMiddleware);
+const whiteListedOrigins = [process.env.FE_DEV_URL, process.env.FE_PROD_URL];
 
+console.log("Permitted origins:");
+console.table(whiteListedOrigins);
+
+server.use(cors());
+
+server.use(loggerMiddleware);
+server.use(express.static(publicFolderPath));
 server.use(cors());
 server.use(express.json());
 
 server.use("/authors", userRouter);
 server.use("/posts", postsRouter);
-// server.use("/uploadAvatar", filesRouter);
+server.use("/files", postsRouterFile);
 // server.use("/uploadCover", uploadPostsRouter);
 
 server.use(badRequestHandler);
