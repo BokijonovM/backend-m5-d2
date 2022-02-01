@@ -6,6 +6,9 @@ import fs from "fs";
 
 import multer from "multer";
 
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = dirname(__filename);

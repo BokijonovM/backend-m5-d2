@@ -20,3 +20,6 @@ export const writeAuthors = content => writeJSON(authorsJSONPath, content);
 
 export const saveUsersAvatars = (filename, contentAsABuffer) =>
   writeFile(join(usersPublicFolderPath, filename), contentAsABuffer);
+
+// export const saveUsersAvatars = (filename, contentAsABuffer) =>
+//   writeFile(join(usersPublicFolderPath, filename), contentAsABuffer);
