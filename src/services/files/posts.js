@@ -7,6 +7,11 @@ import fs from "fs";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import {
+  getPosts,
+  writePosts,
+  saveUsersAvatars,
+} from "../../lib/fs-toolsPost.js";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -16,7 +21,7 @@ const publicDirectory = path.join(__dirname, "../../../public/img/posts");
 
 export const parseFile = multer();
 
-const postsRouter = express.Router();
+const postsRouterFile = express.Router();
 
 const cloudinaryUploader = multer({
   storage: new CloudinaryStorage({
@@ -27,13 +32,23 @@ const cloudinaryUploader = multer({
   }),
 }).single("avatar");
 
-postsRouter.post(
-  "/cloudinaryUpload",
+postsRouterFile.post(
+  "/:postId/cover",
   cloudinaryUploader,
   async (req, res, next) => {
     try {
       console.log(req.file);
+      const posts = await getPosts();
 
+      const index = posts.findIndex(post => post._id === req.params.postId);
+
+      const oldPost = posts[index];
+
+      const updatedPost = { ...oldPost, cover: req.file.path };
+
+      posts[index] = updatedPost;
+
+      await writePosts(posts);
       res.send("Uploaded on Cloudinary!");
     } catch (error) {
       next(error);
@@ -56,4 +71,4 @@ export const uploadFile = (req, res, next) => {
   }
 };
 
-export default postsRouter;
+export default postsRouterFile;
