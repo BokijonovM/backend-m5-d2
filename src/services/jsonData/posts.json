@@ -1,1 +1,30 @@
-[{"_id":"rkowrhz0kyy1thqp","category":"Comedy","title":"Ukrainian official tells CNN Biden's call with Ukrainian President 'did not go well' but White House disputes account","cover":"https://cdn.cnn.com/cnnnext/dam/assets/220103023851-biden-zelensky-split-dec-2021-exlarge-169.jpg","author":{"name":"SomeOne","surname":"Zuck","avatar":"https://images.unsplash.com/photo-1643187052917-8365785db900?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"},"readTime":{"value":"2","unit":"minutes"},"content":"Something","createdAt":"2022-01-28T06:53:06.961Z"},{"_id":"rkowrhz0kyy2g0o1","category":"Horror","title":"Ukrainian official tells CNN Biden's call with Ukrainian President 'did not go well' but White House disputes account","cover":"https://images.unsplash.com/photo-1643295368014-a8868e9fb550?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80","author":{"name":"Mark","surname":"Zuck","avatar":"https://images.unsplash.com/photo-1643187052917-8365785db900?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"},"readTime":{"value":"2","unit":"minutes"},"content":"The White House, however, disputed the official's account, warning that anonymous sources were \"leaking falsehoods.\" They did state that Biden warned Zelensky an imminent invasion is a \"distinct possibility.\"On the call, which the Ukrainian official described as \"long and frank,\" Biden warned his Ukrainian counterpart that a Russian attack&nbsp;may be imminent, saying that an invasion was now virtually certain, once the ground had frozen later in February, according to the official.Zelensky, however, restated his position that the threat from Russia remains \"dangerous but ambiguous,\" and it is not certain that an attack will take place, the official said.","createdAt":"2022-01-28T07:10:37.921Z"},{"_id":"rkowrhz0kz49z8vj","createdAt":"2022-02-01T15:28:09.391Z"},{"_id":"rkowrikwkz4ajb8i","category":"Horror","title":"Ukrainian official tells CNN Biden's call with Ukrainian President 'did not go well' but White House disputes account","cover":"no","author":{"name":"NoName","surname":"NoSurname","avatar":"no"},"readTime":{"value":"2","unit":"minutes"},"content":"gg","createdAt":"2022-02-01T15:43:45.569Z"}]
+[
+  {
+    "_id": "rkowrhz0kyy1thqp",
+    "category": "Comedy",
+    "title": "Ukrainian official tells CNN Biden's call with Ukrainian President 'did not go well' but White House disputes account",
+    "cover": "https://cdn.cnn.com/cnnnext/dam/assets/220103023851-biden-zelensky-split-dec-2021-exlarge-169.jpg",
+    "author": {
+      "name": "SomeOne",
+      "surname": "Zuck",
+      "avatar": "https://res.cloudinary.com/dubf5nkhu/image/upload/v1643734764/oct21/c47feylbrriheysrw76r.jpg"
+    },
+    "readTime": { "value": "2", "unit": "minutes" },
+    "content": "Something",
+    "createdAt": "2022-01-28T06:53:06.961Z"
+  },
+  {
+    "_id": "rkowrhz0kyy2g0o1",
+    "category": "Horror",
+    "title": "Ukrainian official tells CNN Biden's call with Ukrainian President 'did not go well' but White House disputes account",
+    "cover": "https://res.cloudinary.com/dubf5nkhu/image/upload/v1643734858/oct21/ksg0rhjeonp63hswkdva.jpg",
+    "author": {
+      "name": "Mark",
+      "surname": "Zuck",
+      "avatar": "https://res.cloudinary.com/dubf5nkhu/image/upload/v1643734809/oct21/chwv9sxstu3tm3yza6ib.jpg"
+    },
+    "readTime": { "value": "2", "unit": "minutes" },
+    "content": "The White House, however, disputed the official's account, warning that anonymous sources were \"leaking falsehoods.\" They did state that Biden warned Zelensky an imminent invasion is a \"distinct possibility.\"On the call, which the Ukrainian official described as \"long and frank,\" Biden warned his Ukrainian counterpart that a Russian attack&nbsp;may be imminent, saying that an invasion was now virtually certain, once the ground had frozen later in February, according to the official.Zelensky, however, restated his position that the threat from Russia remains \"dangerous but ambiguous,\" and it is not certain that an attack will take place, the official said.",
+    "createdAt": "2022-01-28T07:10:37.921Z"
+  }
+]
