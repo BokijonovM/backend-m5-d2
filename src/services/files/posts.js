@@ -30,6 +30,15 @@ const cloudinaryUploader = multer({
       folder: "oct21",
     },
   }),
+}).single("cover");
+
+const cloudinaryUploaderAuthor = multer({
+  storage: new CloudinaryStorage({
+    cloudinary, // search automatically for process.env.CLOUDINARY_URL
+    params: {
+      folder: "oct21",
+    },
+  }),
 }).single("avatar");
 
 postsRouterFile.post(
@@ -45,6 +54,37 @@ postsRouterFile.post(
       const oldPost = posts[index];
 
       const updatedPost = { ...oldPost, cover: req.file.path };
+
+      posts[index] = updatedPost;
+
+      await writePosts(posts);
+      res.send("Uploaded on Cloudinary!");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+postsRouterFile.post(
+  "/:postId/avatar",
+  cloudinaryUploaderAuthor,
+  async (req, res, next) => {
+    try {
+      console.log(req.file);
+      const posts = await getPosts();
+
+      const index = posts.findIndex(post => post._id === req.params.postId);
+
+      const oldPost = posts[index];
+
+      const updatedPost = {
+        ...oldPost,
+        author: {
+          name: oldPost.author.name,
+          surname: oldPost.author.surname,
+          avatar: req.file.path,
+        },
+      };
 
       posts[index] = updatedPost;
 
