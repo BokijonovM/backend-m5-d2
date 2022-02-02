@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import { fileURLToPath } from "url";
 import { join, dirname } from "path";
 
-const { readJSON, writeJSON, writeFile } = fs;
+const { readJSON, writeJSON, writeFile, createReadStream } = fs;
 
 const dataFolderPath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -25,3 +25,5 @@ export const writeAuthors = content => writeJSON(authorsJSONPath, content);
 //   writeFile(join(usersPublicFolderPath, filename), contentAsABuffer);
 export const saveUsersAvatars = (filename, contentAsABuffer) =>
   writeFile(join(usersPublicFolderPath, filename), contentAsABuffer);
+
+export const getBooksReadableStream = () => createReadStream(postsJSONPath);

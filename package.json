@@ -30,6 +30,7 @@
     "fs-tools": "^0.5.0",
     "multer": "^1.4.4",
     "multer-storage-cloudinary": "^4.0.0",
+    "pdfmake": "^0.2.4",
     "serve": "^13.0.2",
     "uniqid": "^5.4.0"
   },

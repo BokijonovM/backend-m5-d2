@@ -12,6 +12,8 @@ import {
   writePosts,
   saveUsersAvatars,
 } from "../../lib/fs-toolsPost.js";
+import { getPDFReadableStream } from "../../lib/pdf-tools.js";
+import { pipeline } from "stream";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -95,6 +97,20 @@ postsRouterFile.post(
     }
   }
 );
+
+postsRouterFile.get("/downloadPDF", (rea, res, next) => {
+  try {
+    res.setHeader("Content-Disposition", "attachment; filename=posts.pdf");
+
+    const source = getPDFReadableStream("Example Text");
+    const destination = res;
+    pipeline(source, destination, err => {
+      if (err) next(err);
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export const uploadFile = (req, res, next) => {
   try {
