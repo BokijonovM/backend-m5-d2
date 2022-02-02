@@ -8,6 +8,8 @@ import { validationResult } from "express-validator";
 import { newPostValidation } from "./validation.js";
 import { getPosts, getAuthors, writePosts } from "../../lib/fs-toolsPost.js";
 import { parseFile, uploadFile } from "../files/posts.js";
+import { createPDFReadableStream } from "./pdf-utils.js";
+import { pipeline } from "stream";
 
 const postsRouter = express.Router();
 
@@ -176,4 +178,29 @@ postsRouter.put(
     }
   }
 );
+
+postsRouter.get("/download/:postId", async (req, res, next) => {
+  try {
+    const blogPosts = await getPosts();
+    const selectedBlogPost = blogPosts.find(
+      blogPost => blogPost._id === req.params.postId
+    );
+    //create PDF readableStream
+    const source = await createPDFReadableStream(selectedBlogPost);
+    // set header
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${selectedBlogPost._id}.pdf`
+    );
+    // set destination
+    const destination = res;
+    pipeline(source, destination, err => {
+      if (err) {
+        next(err);
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 export default postsRouter;
