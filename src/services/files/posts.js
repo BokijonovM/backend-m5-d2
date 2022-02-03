@@ -11,9 +11,11 @@ import {
   getPosts,
   writePosts,
   saveUsersAvatars,
+  getBooksReadableStream,
 } from "../../lib/fs-toolsPost.js";
 import { getPDFReadableStream } from "../../lib/pdf-tools.js";
 import { pipeline } from "stream";
+import json2csv from "json2csv";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -105,6 +107,22 @@ postsRouterFile.get("/downloadPDF", (rea, res, next) => {
     const source = getPDFReadableStream("Example Text");
     const destination = res;
     pipeline(source, destination, err => {
+      if (err) next(err);
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+postsRouterFile.get("/downloadCSV", (req, res, next) => {
+  try {
+    res.setHeader("Content-Disposition", "attachment; filename=authors.csv");
+    const source = getBooksReadableStream();
+    const transform = new json2csv.Transform({
+      fields: ["author.name", "author.surname"],
+    });
+    const destination = res;
+    pipeline(source, transform, destination, err => {
       if (err) next(err);
     });
   } catch (error) {
