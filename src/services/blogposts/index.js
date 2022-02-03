@@ -209,14 +209,15 @@ postsRouter.post("/register", async (req, res, next) => {
   try {
     // 1. Receive the email address from the req.body
 
-    const { email } = req.body;
+    // const { email } = req.body;
+    const { email } = "muhsinjonboqijonov2002@gmail.com";
 
     // 2. Save new user in db
 
     // 3. Send email to new user
     await sendRegistrationEmail(email);
 
-    res.send({ message: "Ok" });
+    res.send({ message: "Email sent!" });
   } catch (error) {
     next(error);
   }
