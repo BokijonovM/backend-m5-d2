@@ -10,6 +10,7 @@ import { getPosts, getAuthors, writePosts } from "../../lib/fs-toolsPost.js";
 import { parseFile, uploadFile } from "../files/posts.js";
 import { createPDFReadableStream } from "./pdf-utils.js";
 import { pipeline } from "stream";
+import { sendRegistrationEmail } from "../../lib/email-tools.js";
 
 const postsRouter = express.Router();
 
@@ -203,4 +204,22 @@ postsRouter.get("/download/:postId", async (req, res, next) => {
     next(error);
   }
 });
+
+postsRouter.post("/register", async (req, res, next) => {
+  try {
+    // 1. Receive the email address from the req.body
+
+    const { email } = req.body;
+
+    // 2. Save new user in db
+
+    // 3. Send email to new user
+    await sendRegistrationEmail(email);
+
+    res.send({ message: "Ok" });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default postsRouter;

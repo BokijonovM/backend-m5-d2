@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/BokijonovM/backend-m5-d2#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.6.0",
     "cloudinary": "^1.28.1",
     "cors": "^2.8.5",
     "express": "^4.17.2",
