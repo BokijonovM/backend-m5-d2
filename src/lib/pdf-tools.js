@@ -1,4 +1,5 @@
 import PdfPrinter from "pdfmake";
+import { pipeline } from "stream";
 
 export const getPDFReadableStream = data => {
   const fonts = {
