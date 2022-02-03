@@ -51,7 +51,8 @@ postsRouter.post("/", newPostValidation, async (req, res, next) => {
       createdAt: new Date(),
     };
     const postsArray = await getPosts();
-
+    const { author } = req.body;
+    await sendRegistrationEmail(author.email);
     postsArray.push(blog);
     await writePosts(postsArray);
     res.send(blog);
@@ -207,17 +208,10 @@ postsRouter.get("/download/:postId", async (req, res, next) => {
 
 postsRouter.post("/register", async (req, res, next) => {
   try {
-    // 1. Receive the email address from the req.body
-
-    // const { email } = req.body;
-    const { email } = "muhsinjonboqijonov2002@gmail.com";
-
-    // 2. Save new user in db
-
-    // 3. Send email to new user
+    const { email } = req.body;
     await sendRegistrationEmail(email);
 
-    res.send({ message: "Email sent!" });
+    res.send({ message: "Email  sent!" });
   } catch (error) {
     next(error);
   }
