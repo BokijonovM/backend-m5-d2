@@ -12,7 +12,7 @@ import {
 } from "./errorHandlers.js";
 import cors from "cors";
 import postsRouterFile from "./services/files/posts.js";
-import usersRouterFile from "./services/data/index.js";
+// import usersRouterFile from "./services/data/index.js";
 // import uploadPostsRouter from "./services/files/posts.js";
 
 const server = express();
@@ -43,7 +43,7 @@ server.use(express.json());
 server.use("/authors", userRouter);
 server.use("/posts", postsRouter);
 server.use("/files", postsRouterFile);
-server.use("/avatars", usersRouterFile);
+// server.use("/avatars", usersRouterFile);
 // server.use("/uploadCover", uploadPostsRouter);
 
 server.use(badRequestHandler);
