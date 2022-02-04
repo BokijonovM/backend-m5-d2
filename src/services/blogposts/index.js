@@ -51,8 +51,8 @@ postsRouter.post("/", newPostValidation, async (req, res, next) => {
       createdAt: new Date(),
     };
     const postsArray = await getPosts();
-    const { author } = req.body;
-    await sendRegistrationEmail(author.email);
+    const { newBlog } = req.body;
+    await sendRegistrationEmail(newBlog);
     postsArray.push(blog);
     await writePosts(postsArray);
     res.send(blog);
