@@ -51,7 +51,7 @@ postsRouter.post("/", newPostValidation, async (req, res, next) => {
       createdAt: new Date(),
     };
     const postsArray = await getPosts();
-    const { newBlog } = req.body;
+    const newBlog = req.body;
     await sendRegistrationEmail(newBlog);
     postsArray.push(blog);
     await writePosts(postsArray);
@@ -74,7 +74,6 @@ postsRouter.get("/:postId", async (req, res, next) => {
         .send({ message: `Post with ${req.params.postId} is not found!` });
     }
     res.send(singlePost);
-    res.send(fileArray);
   } catch (error) {
     next(error);
   }
